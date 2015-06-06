@@ -1,0 +1,42 @@
+
+html {
+	background: #dadada;
+}
+
+#adminmenumain {
+	display: none;
+}
+#wpcontent, #wpfooter,
+.folded #wpcontent, .folded #wpfooter {
+	margin:     20px 20px 20px 20px;/*180px;*/
+	background: #f1f1f1;
+}
+
+#wpcontent {
+	border: 1px solid #e0e0e0;
+}
+
+#wpfooter {
+	border-left: 1px solid #e0e0e0;
+	border-right: 1px solid #e0e0e0;
+}
+
+#tomjnadminhead {
+	color: #fafafa;
+	background: #23282d;
+	padding:      40px 40px 160px;
+	margin-bottom:-80px;
+}
+
+#tomjnadminhead > h2 {
+	color: #fafafa;
+	font-size: 3em;
+}
+
+.wrap > h2:first-of-type {
+	display:block;
+	height:0;
+	color:transparent;
+	margin-bottom: 20px;
+	padding: 0;
+}
