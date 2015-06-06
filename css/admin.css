@@ -42,7 +42,31 @@ html {
 	display:block;
 	height:0;
 	color:transparent;
-	margin-bottom: 30px;
+	margin-bottom: 40px;
 	font-size:0;
 	padding: 0;
+}
+
+.tomjn_admin_top_current_parent {
+	font-weight:bold;
+}
+
+.tomjn_dash_menu {
+	overflow:auto;
+}
+.tomjn_dash_menu_section {
+	width:100%;
+	max-width:320px;
+	min-width:120px;
+	float:left;
+	margin-bottom: 20px;
+	margin-right: 20px;
+}
+
+.tomjn_dash_menu_section ul {
+	overfloat:auto;
+}
+.tomjn_dash_menu_item {
+	float:left;
+	margin-right:20px;
 }
