@@ -21,15 +21,12 @@ class MenuHeader {
 	public function run() {
 		add_action( 'adminmenu', array( $this, 'adminmenu' ), PHP_INT_MAX );
 		add_action( 'in_admin_header', array( $this, 'in_admin_header' ), PHP_INT_MAX + 1 );
-		add_action( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
-		add_action( 'wp_network_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
 		add_action( 'tomjn_header_end', array( $this, 'tomjn_header_end' ) );
 		add_action( 'tomjn_header_begin', array( $this, 'tomjn_header_begin' ) );
 	}
 
 	public function adminmenu() {
 		ob_start();
-		echo '<!-- commentius startus -->';
 	}
 
 	public function in_admin_header() {
@@ -78,56 +75,6 @@ class MenuHeader {
 		}
 		echo implode( ', ', $links );
 		//$this->debug_menu();
-	}
-
-	public function wp_dashboard_setup() {
-		add_action( 'tomjn_header_end', array( $this, 'dash_tomjn_header_end' ) );
-	}
-
-	public function dash_tomjn_header_end() {
-		global $menu, $submenu;
-		?>
-			<div class="tomjn_dash_menu">
-				<?php
-				foreach ( $menu as $item ) {
-					$title = $item[0];
-					if ( empty( $title ) ) {
-						continue;
-					}
-					$title       = wptexturize( $title );
-					$url = $item[2];
-					if ( is_network_admin() ) {
-						$url = 'network/'.$url;
-					}
-					$url = admin_url( $url );
-					?>
-					<div class="tomjn_dash_menu_section">
-						<h3><a href="<?php echo esc_url( $url ); ?>"><?php echo $title; ?></a></h3>
-						<?php
-						if ( !empty( $submenu[ $item[2]] ) ) {
-							echo '<ul>';
-							foreach ( $submenu[ $item[2] ] as $sub_item ) {
-								if ( !current_user_can( $sub_item[1] ) ) {
-									continue;
-								}
-								echo '<li class="tomjn_dash_menu_item">';
-								$url = $sub_item[2];
-								if ( is_network_admin() ) {
-									$url = 'network/'.$url;
-								}
-								$url = admin_url( $url );
-								echo '<a href="'.esc_url( $url ).'">'.$sub_item[0].'</a>';
-								echo '</li>';
-							}
-							echo '</ul>';
-						}
-						?>
-					</div>
-					<?php
-				}
-				?>
-			</div>
-		<?php
 	}
 
 	public function tomjn_header_begin() {

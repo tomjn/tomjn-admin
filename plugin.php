@@ -20,10 +20,12 @@ require_once( "php/MainController.php" );
 
 use tomjn\admin\MainController;
 use tomjn\admin\AssetsController;
+use tomjn\admin\MenuDash;
 use tomjn\admin\MenuHeader;
 
 $assets = new AssetsController( __FILE__ );
 $header = new MenuHeader();
-$controller = new MainController( $assets, $header );
+$dash = new MenuDash();
+$controller = new MainController( $assets, $header, $dash );
 
 $controller->run();
