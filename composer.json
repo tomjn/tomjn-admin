@@ -1,6 +1,6 @@
 {
   "name": "tomjn/admin",
-  "description": "",
+  "description": "Replace the admin menu with a nicer header and dashboard menu",
   "license": "GPL-2.0+",
   "type": "wordpress-plugin",
   "version": "dev-master",
