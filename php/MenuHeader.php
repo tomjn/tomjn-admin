@@ -70,7 +70,7 @@ class MenuHeader {
 				}
 				$title       = wptexturize( $title );
 				$classes_str = implode( ' ', $classes );
-				$links[]     = '<a href="' . admin_url( $sub_item[2] ) . '" class="' . $classes_str . '">' . $title . '</a>';
+				$links[]     = '<a href="' . admin_url( $sub_item[2] ) . '" class="' . esc_attr( $classes_str ). '">'. wp_kses_post( $title ) . '</a>';
 			}
 		}
 		echo implode( ', ', $links );
@@ -81,9 +81,9 @@ class MenuHeader {
 		global $menu, $submenu, $parent_file, $self;
 		$links = array();
 		if ( is_network_admin() ) {
-			$links[] = '<a href="' . admin_url('network') . '">Network Dashboard</a>';
+			$links[] = '<a href="' . esc_url( admin_url('network/') ) . '">Network Dashboard</a>';
 		} else {
-			$links[] = '<a href="' . admin_url() . '">Dashboard</a>';
+			$links[] = '<a href="' . esc_url( admin_url() ) . '">Dashboard</a>';
 		}
 		foreach ( $menu as $key => $item ) {
 			if ( !current_user_can( $item[1] ) ) {
@@ -116,7 +116,7 @@ class MenuHeader {
 					$url = 'network/'.$url;
 				}
 				$url = admin_url( $url );
-				$links[]     = '<a href="' . esc_url( $url ) . '" class="' . esc_attr( $classes_str ) . '">' . $title . '</a>';
+				$links[]     = '<a href="' . esc_url( $url ) . '" class="' . esc_attr( $classes_str ) . '">' . wp_kses_post( $title ) . '</a>';
 				break;
 			}
 		}

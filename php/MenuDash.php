@@ -45,7 +45,7 @@ class MenuDash {
 				$url = admin_url( $url );
 				?>
 				<div class="tomjn_dash_menu_section">
-					<h3><a href="<?php echo esc_url( $url ); ?>"><?php echo $title; ?></a></h3>
+					<h3><a href="<?php echo esc_url( $url ); ?>"><?php echo wp_kses_post( $title ); ?></a></h3>
 					<?php
 					if ( !empty( $submenu[ $item[2]] ) ) {
 						echo '<ul>';
@@ -59,7 +59,7 @@ class MenuDash {
 								$url = 'network/'.$url;
 							}
 							$url = admin_url( $url );
-							echo '<a href="'.esc_url( $url ).'">'.$sub_item[0].'</a>';
+							echo '<a href="'.esc_url( $url ).'">'.wp_kses_post( $sub_item[0] ).'</a>';
 							echo '</li>';
 						}
 						echo '</ul>';
