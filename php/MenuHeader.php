@@ -22,6 +22,7 @@ class MenuHeader {
 		add_action( 'adminmenu', array( $this, 'adminmenu' ), PHP_INT_MAX );
 		add_action( 'in_admin_header', array( $this, 'in_admin_header' ), PHP_INT_MAX + 1 );
 		add_action( 'wp_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
+		add_action( 'wp_network_dashboard_setup', array( $this, 'wp_dashboard_setup' ) );
 		add_action( 'tomjn_header_end', array( $this, 'tomjn_header_end' ) );
 		add_action( 'tomjn_header_begin', array( $this, 'tomjn_header_begin' ) );
 	}
@@ -76,6 +77,7 @@ class MenuHeader {
 			}
 		}
 		echo implode( ', ', $links );
+		//$this->debug_menu();
 	}
 
 	public function wp_dashboard_setup() {
@@ -93,9 +95,14 @@ class MenuHeader {
 						continue;
 					}
 					$title       = wptexturize( $title );
+					$url = $item[2];
+					if ( is_network_admin() ) {
+						$url = 'network/'.$url;
+					}
+					$url = admin_url( $url );
 					?>
 					<div class="tomjn_dash_menu_section">
-						<h3><a href="<?php echo esc_url( admin_url( $item[2] ) ); ?>"><?php echo $title; ?></a></h3>
+						<h3><a href="<?php echo esc_url( $url ); ?>"><?php echo $title; ?></a></h3>
 						<?php
 						if ( !empty( $submenu[ $item[2]] ) ) {
 							echo '<ul>';
@@ -104,7 +111,12 @@ class MenuHeader {
 									continue;
 								}
 								echo '<li class="tomjn_dash_menu_item">';
-								echo '<a href="'.esc_url( admin_url( $sub_item[2] ) ).'">'.$sub_item[0].'</a>';
+								$url = $sub_item[2];
+								if ( is_network_admin() ) {
+									$url = 'network/'.$url;
+								}
+								$url = admin_url( $url );
+								echo '<a href="'.esc_url( $url ).'">'.$sub_item[0].'</a>';
 								echo '</li>';
 							}
 							echo '</ul>';
@@ -116,26 +128,16 @@ class MenuHeader {
 				?>
 			</div>
 		<?php
-		/*echo '<pre>';
-		print_r( $menu );
-		echo '</pre>';
-		echo '<hr>';
-		echo '<pre>';
-		print_r( $submenu[ $parent_file ] );
-		echo '</pre>';
-		echo '<hr>';
-		echo '<pre>'.print_r($parent_file, false).'</pre>';
-		echo '<hr>';
-		global $_wp_admin_css_colors;
-		echo '<pre>';
-		print_r( $_wp_admin_css_colors[get_user_option('admin_color')] );
-		echo '</pre>';*/
 	}
 
 	public function tomjn_header_begin() {
 		global $menu, $submenu, $parent_file, $self;
 		$links = array();
-		$links[] = '<a href="'.admin_url().'">Dashboard</a>';
+		if ( is_network_admin() ) {
+			$links[] = '<a href="' . admin_url('network') . '">Network Dashboard</a>';
+		} else {
+			$links[] = '<a href="' . admin_url() . '">Dashboard</a>';
+		}
 		foreach ( $menu as $key => $item ) {
 			if ( !current_user_can( $item[1] ) ) {
 				continue;
@@ -162,12 +164,37 @@ class MenuHeader {
 				$classes[] = 'tomjn_admin_top_current_parent';
 				$title       = wptexturize( $item[0] );
 				$classes_str = implode( ' ', $classes );
-				$links[]     = '<a href="' . esc_url( admin_url( $item[2] ) ) . '" class="' . esc_attr( $classes_str ) . '">' . $title . '</a>';
+				$url = $item[2];
+				if ( is_network_admin() ) {
+					$url = 'network/'.$url;
+				}
+				$url = admin_url( $url );
+				$links[]     = '<a href="' . esc_url( $url ) . '" class="' . esc_attr( $classes_str ) . '">' . $title . '</a>';
 				break;
 			}
 		}
 		if ( count( $links ) > 1 ) {
 			echo implode( ' > ', $links );
 		}
+	}
+
+	private function debug_menu() {
+		global $parent_file, $menu, $submenu, $_wp_admin_css_colors;
+		echo '<pre>';
+		print_r( $menu );
+		echo '</pre>';
+		echo '<hr>';
+		if ( !empty( $submenu[$parent_file] ) ) {
+			echo '<pre>';
+			print_r( $submenu[$parent_file] );
+			echo '</pre>';
+			echo '<hr>';
+		}
+
+		echo '<pre>'.print_r($parent_file, false).'</pre>';
+		echo '<hr>';
+		echo '<pre>';
+		print_r( $_wp_admin_css_colors[get_user_option('admin_color')] );
+		echo '</pre>';
 	}
 }
