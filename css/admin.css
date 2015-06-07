@@ -28,6 +28,10 @@ html {
 	margin-bottom:-80px;
 }
 
+#tomjnadminhead .xdebug-error,
+#tomjnadminhead .xe-notice {
+	color: #000;
+}
 #tomjnadminhead > h2 {
 	color: #fafafa;
 	font-size: 3em;
